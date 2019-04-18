@@ -46,6 +46,32 @@ class Atm {
 
     public Atm() {
         database = new HashMap<>();
+        addAccount(new Account("12345","1234"));
+        addAccount(new Account("00000","5801"));
+    }
+
+    public void login() {
+        System.out.println("Witaj!");
+        getAccessToAccount();
+    }
+
+    public void getAccessToAccount() {
+
+        System.out.println("Podaj numer konta...");
+        Scanner sc = new Scanner(System.in);
+        String input = sc.toString();
+        sc.close();
+
+        if (database.containsKey(input)) {
+            Account account = database.get(input);
+            while(!account.isAccess()){
+                database.get(input).checkPin();
+            }
+            
+        } else {
+            System.out.println("Numer nie istnieje. ");
+            getAccessToAccount();
+        }
     }
 
     /**
@@ -57,29 +83,12 @@ class Atm {
         database.put(acc.getNumber(), acc);
     }
 
+
+
     /**
-     * Sprawdza czy konto o podanym numerze istnieje.
-     * Czy to void czy bool? Jak korzystać z tego bankomatu?
+     * Sprawdza czy konto o podanym numerze istnieje. Czy to void czy bool? Jak
+     * korzystać z tego bankomatu?
      */
-    public void containsAccount() {
-
-        System.out.println("Podaj numer konta...");
-        Scanner sc = new Scanner(System.in);
-        String input = sc.toString();
-        sc.close();
-
-        if (database.containsKey(input)) {
-            database.get(input).checkPin();
-            database.get(input).login();
-        } else {
-            System.out.println("Numer nie istnieje. ");
-            containsAccount();
-        }
-
-    }
-}
-
-
 }
 
 class Account {
@@ -90,8 +99,8 @@ class Account {
     private String pin;
 
     /**
-     * Konstruktor obiektu Account
-     * Domyślnie access = false, saldo = 0
+     * Konstruktor obiektu Account Domyślnie access = false, saldo = 0
+     *
      * @param num numer konta
      * @param pin numer pin
      */
@@ -180,9 +189,4 @@ class Account {
 
     }
 
-    public void login() {
-        if (this.isAccess()) {
-            
-        }
-    }
 }
